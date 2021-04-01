@@ -1,6 +1,7 @@
 # ServiceNow CI/CD GitHub Action for Batch Install
 
 Installs two or more packages in a single specified batch.
+
 https://developer.servicenow.com/dev.do#!/reference/api/quebec/rest/cicd-api#cicd-POST-app-batch-install
 
 # Usage
