@@ -1,0 +1,22 @@
+name: 'ServiceNow CI/CD Install App'
+description: 'Batch Install the specified applications from the application repository onto the specified instances.'
+author: "ServiceNow"
+inputs:
+  source:
+    description: "Source of the payload(file/workflow)"
+    required: true
+  filename:
+    description: "Filename(or a path without trailing slash) of the manifest JSON file is source equals to file(Default: now_batch_manifest.json)"
+    required: false
+  manifest:
+    description: "JSON string with payload if source equals to workflow"
+    required: false
+outputs:
+  rollbackURL:
+    description: "URL to rollback batch"
+runs:
+  using: 'node12'
+  main: './lib/index.js'
+branding:
+  icon: 'refresh-ccw'
+  color: 'green'
