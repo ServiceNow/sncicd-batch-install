@@ -6,7 +6,7 @@ import { AppProps, Errors, RequestResult, Payload } from '../App.types'
 
 describe(`App lib`, () => {
     let props: AppProps
-    const inputs: any = {
+    const inputs: Record<string, string> = {
         version: '1.0.1',
     }
 
@@ -40,36 +40,35 @@ describe(`App lib`, () => {
             expect(() => app.getRequestUrl()).toThrow(Errors.NO_INSTALL_INSTANCE)
         })
     })
-    
+
     describe(`Install batch`, () => {
         it(`should call functions`, () => {
             const app = new App(props)
             const post = jest.spyOn(axios, 'post')
-            const getRequestUrl = jest.spyOn(app, 'getRequestUrl').mockImplementation(() => 'https://test.service-now.com/api/sn_cicd/app/batch/install');
-            const buildRequestPayload = jest.spyOn(app, 'buildRequestPayload')
-                .mockImplementation(
-                    () => {
-                        return {
-                            "name": "123",
-                            "packages": [
-                                {
-                                    "id": "1",
-                                    "type": "application",
-                                    "load_demo_data": false,
-                                    "requested_version": "2",
-                                    "requested_customization_version": "3",
-                                    "notes": "test"
-                                }
-                            ]
-                        }
-                    }
-                );
+            const getRequestUrl = jest
+                .spyOn(app, 'getRequestUrl')
+                .mockImplementation(() => 'https://test.service-now.com/api/sn_cicd/app/batch/install')
+            const buildRequestPayload = jest.spyOn(app, 'buildRequestPayload').mockImplementation(() => {
+                return {
+                    'name': '123',
+                    'packages': [
+                        {
+                            'id': '1',
+                            'type': 'application',
+                            'load_demo_data': false,
+                            'requested_version': '2',
+                            'requested_customization_version': '3',
+                            'notes': 'test',
+                        },
+                    ],
+                }
+            })
 
             const response: RequestResult = {
                 links: {
                     progress: {
                         id: '1',
-                        url: "https://example.com/1",
+                        url: 'https://example.com/1',
                     },
                     results: {
                         id: '2',
@@ -100,41 +99,40 @@ describe(`App lib`, () => {
 
     describe(`buildRequestPayload`, () => {
         const app = new App({ password: '2', nowInstallInstance: 'test', username: '1' })
-        const requestPayloadFromFile = jest.spyOn(app, 'getRequestPayloadFromFile');
-        const requestPayloadFromWorkflow = jest.spyOn(app, 'getRequestPayloadFromWorkflow');
-        let payload: Payload;
-        
+        const requestPayloadFromFile = jest.spyOn(app, 'getRequestPayloadFromFile')
+        const requestPayloadFromWorkflow = jest.spyOn(app, 'getRequestPayloadFromWorkflow')
+        let payload: Payload
+
         beforeAll(() => {
             payload = {
-                "name": "123",
-                "packages": [
+                'name': '123',
+                'packages': [
                     {
-                        "id": "1",
-                        "type": "application",
-                        "load_demo_data": false,
-                        "requested_version": "2",
-                        "requested_customization_version": "3",
-                        "notes": "test"
-                    }
-                ]
+                        'id': '1',
+                        'type': 'application',
+                        'load_demo_data': false,
+                        'requested_version': '2',
+                        'requested_customization_version': '3',
+                        'notes': 'test',
+                    },
+                ],
             }
-            
+
             requestPayloadFromFile.mockImplementation(() => payload)
             requestPayloadFromWorkflow.mockImplementation(() => payload)
-           
         })
 
         it(`should call getRequestPayloadFromFile`, () => {
-            const actualPayload = app.buildRequestPayload('file');
-            
-            expect(requestPayloadFromFile).toHaveBeenCalledTimes(1);
+            const actualPayload = app.buildRequestPayload('file')
+
+            expect(requestPayloadFromFile).toHaveBeenCalledTimes(1)
             expect(actualPayload).toEqual(payload)
         })
 
         it(`should call getRequestPayloadFromWorkflow`, () => {
-            const actualPayload = app.buildRequestPayload('workflow');
-            
-            expect(requestPayloadFromWorkflow).toHaveBeenCalledTimes(1);
+            const actualPayload = app.buildRequestPayload('workflow')
+
+            expect(requestPayloadFromWorkflow).toHaveBeenCalledTimes(1)
             expect(actualPayload).toEqual(payload)
         })
 

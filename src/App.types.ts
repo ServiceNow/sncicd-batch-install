@@ -71,32 +71,32 @@ export interface RequestResult {
 
 export interface ResultsResponce {
     data: {
-        result: { 
+        result: {
             batch_plan: BatchPlan,
-            batch_items: BatchItem[]
-        };
-    }
+            batch_items: BatchItem[],
+        },
+    };
 }
 
 export interface BatchPlan {
-    state: string,
-    id: string,
-    url: string,
-    notes?: string,
-    name?: string
+    state: string;
+    id: string;
+    url: string;
+    notes?: string;
+    name?: string;
 }
 
 export interface BatchItem {
-    state: string,
-    version?: string,
-    type: string,
-    id: string,
-    url: string,
-    notes?: string,
-    name?: string,
-    item_id: string,
-    customization_version?:string,
-    status_message: string
+    state: string;
+    version?: string;
+    type: string;
+    id: string;
+    url: string;
+    notes?: string;
+    name?: string;
+    item_id: string;
+    customization_version?: string;
+    status_message: string;
 }
 
 export enum ResponseStatus {

@@ -55,8 +55,7 @@ export default class App {
         if (this.props.nowInstallInstance) {
             return `https://${this.props.nowInstallInstance}.service-now.com/api/sn_cicd/app/batch/install`
         } else {
-            throw new Error(Errors.NO_INSTALL_INSTANCE);
-            
+            throw new Error(Errors.NO_INSTALL_INSTANCE)
         }
     }
 
@@ -67,7 +66,7 @@ export default class App {
      * @throws          Error
      * @returns         Payload object
      */
-    buildRequestPayload(source: string = ''): Payload {
+    buildRequestPayload(source = ''): Payload {
         let payload: Payload
 
         switch (source) {
@@ -173,7 +172,7 @@ export default class App {
      * @throws          Error
      * @returns         void
      */
-    async printStatus(result: RequestResult, resultsUrl: string = ''): Promise<void> {
+    async printStatus(result: RequestResult, resultsUrl = ''): Promise<void> {
         if (+result.status === ResponseStatus.Pending) {
             core.info(result.status_label)
             core.setOutput('rollbackURL', result.links.rollback.url)
@@ -185,7 +184,6 @@ export default class App {
 
         // Recursion to check the status of the request
         if (+result.status < ResponseStatus.Successful) {
-
             //save result url, query if needed
 
             const response: Responce = await axios.get(result.links.progress.url, this.config)
@@ -205,11 +203,11 @@ export default class App {
 
             // Log the failed result, the step throw an error to fail the step
             if (+result.status === ResponseStatus.Failed) {
-                let msg = result.error || result.status_message;
+                let msg = result.error || result.status_message
                 if (resultsUrl) {
-                    const batchResults: ResultsResponce = (await axios.get(resultsUrl, this.config))
+                    const batchResults: ResultsResponce = await axios.get(resultsUrl, this.config)
                     batchResults.data.result.batch_items.forEach((item: BatchItem) => {
-                        msg+= "\n" + item.status_message;
+                        msg += '\n' + item.status_message
                     })
                 }
 
