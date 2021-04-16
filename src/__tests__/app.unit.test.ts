@@ -71,7 +71,7 @@ describe(`App lib`, () => {
                         id: '1',
                         url: "https://example.com/1",
                     },
-                    result: {
+                    results: {
                         id: '2',
                         url: 'https://example.com/2',
                     },

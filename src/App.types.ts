@@ -52,7 +52,7 @@ export interface RequestResult {
             id: string,
             url: string,
         },
-        result: {
+        results: {
             id: string,
             url: string,
         },
@@ -67,6 +67,36 @@ export interface RequestResult {
     status_detail: string;
     error: string;
     percent_complete: number;
+}
+
+export interface ResultsResponce {
+    data: {
+        result: { 
+            batch_plan: BatchPlan,
+            batch_items: BatchItem[]
+        };
+    }
+}
+
+export interface BatchPlan {
+    state: string,
+    id: string,
+    url: string,
+    notes?: string,
+    name?: string
+}
+
+export interface BatchItem {
+    state: string,
+    version?: string,
+    type: string,
+    id: string,
+    url: string,
+    notes?: string,
+    name?: string,
+    item_id: string,
+    customization_version?:string,
+    status_message: string
 }
 
 export enum ResponseStatus {
