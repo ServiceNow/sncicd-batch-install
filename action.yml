@@ -1,4 +1,4 @@
-name: 'ServiceNow CI/CD Install App'
+name: 'ServiceNow CI/CD Batch Install'
 description: 'Batch Install the specified applications from the application repository onto the specified instances.'
 author: "ServiceNow"
 inputs:
