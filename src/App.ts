@@ -12,6 +12,8 @@ import {
     ResponseStatus,
     User,
     ErrorResult,
+    ResultsResponce,
+    BatchItem,
 } from './App.types'
 
 export default class App {
@@ -53,8 +55,7 @@ export default class App {
         if (this.props.nowInstallInstance) {
             return `https://${this.props.nowInstallInstance}.service-now.com/api/sn_cicd/app/batch/install`
         } else {
-            throw new Error(Errors.NO_INSTALL_INSTANCE);
-            
+            throw new Error(Errors.NO_INSTALL_INSTANCE)
         }
     }
 
@@ -65,7 +66,7 @@ export default class App {
      * @throws          Error
      * @returns         Payload object
      */
-    buildRequestPayload(source: string = ''): Payload {
+    buildRequestPayload(source = ''): Payload {
         let payload: Payload
 
         switch (source) {
@@ -171,7 +172,7 @@ export default class App {
      * @throws          Error
      * @returns         void
      */
-    async printStatus(result: RequestResult): Promise<void> {
+    async printStatus(result: RequestResult, resultsUrl = ''): Promise<void> {
         if (+result.status === ResponseStatus.Pending) {
             core.info(result.status_label)
             core.setOutput('rollbackURL', result.links.rollback.url)
@@ -183,11 +184,14 @@ export default class App {
 
         // Recursion to check the status of the request
         if (+result.status < ResponseStatus.Successful) {
+            //save result url, query if needed
+
             const response: Responce = await axios.get(result.links.progress.url, this.config)
+            resultsUrl = result.links.results.url
             // Throttling
             await this.sleep(this.sleepTime)
             // Call itself if the request in the running or pending state
-            await this.printStatus(response.data.result)
+            await this.printStatus(response.data.result, resultsUrl)
         } else {
             // for testing only!
             if (process.env.fail === 'true') throw new Error('Triggered step fail')
@@ -199,7 +203,15 @@ export default class App {
 
             // Log the failed result, the step throw an error to fail the step
             if (+result.status === ResponseStatus.Failed) {
-                throw new Error(result.error || result.status_message)
+                let msg = result.error || result.status_message
+                if (resultsUrl) {
+                    const batchResults: ResultsResponce = await axios.get(resultsUrl, this.config)
+                    batchResults.data.result.batch_items.forEach((item: BatchItem) => {
+                        msg += '\n' + item.status_message
+                    })
+                }
+
+                throw new Error(msg)
             }
 
             // Log the canceled result, the step throw an error to fail the step

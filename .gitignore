@@ -1,7 +1,6 @@
 # Ignore any generated TypeScript -> JavaScript files
 .github/actions/**/*.js
-# node modules
-node_modules/
+
 # Logs
 logs
 *.log

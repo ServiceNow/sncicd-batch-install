@@ -27,7 +27,7 @@ describe('Install app', () => {
 
     it('username and password without instance', () => {
         // simulate the secrets are not fully set
-        process.env.nowInstallInstance = '';
+        process.env.nowInstallInstance = ''
         const errors = [Errors.NO_INSTALL_INSTANCE].join('. ')
 
         run()
