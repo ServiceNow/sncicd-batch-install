@@ -207,7 +207,7 @@ export default class App {
                 if (resultsUrl) {
                     const batchResults: ResultsResponce = await axios.get(resultsUrl, this.config)
                     batchResults.data.result.batch_items.forEach((item: BatchItem) => {
-                        msg += '\n' + item.status_message
+                        msg += `\n${item.name}: ${item.state}. ${item.status_message}`
                     })
                 }
 
