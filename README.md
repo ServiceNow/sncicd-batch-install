@@ -39,7 +39,7 @@ https://github.com/ServiceNow/sncicd_githubworkflow
   env:
     nowUsername: ${{ secrets.NOW_USERNAME }}
     nowPassword: ${{ secrets.NOW_PASSWORD }}
-    nowSourceInstance: ${{ secrets.NOW_CLIENT_INSTANCE }}
+    nowInstallInstance: ${{ secrets.NOW_CLIENT_INSTANCE }}
 ```
 Inputs:
 - **source** - Required. Source of the payload, file/workflow available.
