@@ -187,7 +187,7 @@ export default class App {
             //save result url, query if needed
 
             const response: Response = await axios.get(result.links.progress.url, this.config)
-            resultsUrl = result.links.results.url
+            resultsUrl = result.links.results?.url
             // Throttling
             await this.sleep(this.sleepTime)
             // Call itself if the request in the running or pending state
