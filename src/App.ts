@@ -8,11 +8,11 @@ import {
     axiosConfig,
     Errors,
     Payload,
-    Responce,
+    Response,
     ResponseStatus,
     User,
     ErrorResult,
-    ResultsResponce,
+    ResultsResponse,
     BatchItem,
 } from './App.types'
 
@@ -131,7 +131,7 @@ export default class App {
             const payload: Payload = this.buildRequestPayload(core.getInput('source'))
 
             const url: string = this.getRequestUrl()
-            const response: Responce = await axios.post(url, payload, this.config)
+            const response: Response = await axios.post(url, payload, this.config)
             await this.printStatus(response.data.result)
         } catch (error) {
             let message: string
@@ -186,8 +186,8 @@ export default class App {
         if (+result.status < ResponseStatus.Successful) {
             //save result url, query if needed
 
-            const response: Responce = await axios.get(result.links.progress.url, this.config)
-            resultsUrl = result.links.results.url
+            const response: Response = await axios.get(result.links.progress.url, this.config)
+            resultsUrl = result.links.results?.url
             // Throttling
             await this.sleep(this.sleepTime)
             // Call itself if the request in the running or pending state
@@ -205,7 +205,7 @@ export default class App {
             if (+result.status === ResponseStatus.Failed) {
                 let msg = result.error || result.status_message
                 if (resultsUrl) {
-                    const batchResults: ResultsResponce = await axios.get(resultsUrl, this.config)
+                    const batchResults: ResultsResponse = await axios.get(resultsUrl, this.config)
                     batchResults.data.result.batch_items.forEach((item: BatchItem) => {
                         msg += `\n${item.name}: ${item.state}. ${item.status_message}`
                     })

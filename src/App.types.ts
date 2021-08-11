@@ -40,7 +40,7 @@ export enum Errors {
     WRONG_SOURCE = 'Manifest source is not supported',
 }
 
-export interface Responce {
+export interface Response {
     data: {
         result: RequestResult,
     };
@@ -69,7 +69,7 @@ export interface RequestResult {
     percent_complete: number;
 }
 
-export interface ResultsResponce {
+export interface ResultsResponse {
     data: {
         result: {
             batch_plan: BatchPlan,
