@@ -91,7 +91,7 @@ npm run integration
 ## Build
 
 ```shell script
-npm run buid
+npm run build
 ```
 
 ## Formatting and Linting
